@@ -56,25 +56,50 @@ public class HomeController(
             if(result.Succeeded){
                 var theuser = await _userManager.FindByIdAsync(user.Id);
                 await _userManager.AddToRoleAsync(theuser, "user");
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                return RedirectToAction("index", "home");
             }
-            // else{
-            //     return Content("Account couldnot be created");
-            // }
-
-            // If user is successfully created, sign-in the user using
-            // SignInManager and redirect to index action of HomeController
-            // if (result.Succeeded)
-            // {
-            //     await _signInManager.SignInAsync(user, isPersistent: false);
-            //     return RedirectToAction("index", "home");
-            // }
-
-            //but we are only creating accounts so donot sign in
-            return RedirectToAction("index", "home");
+            else{
+                return Content("Account couldnot be created");
+            }
 
         }
         return View(model);
     }
+    [HttpGet]
+    public IActionResult Login()
+    {
+        return View();
+    }
+    [HttpPost]
+    public async Task<IActionResult> Login(LoginViewModel model)
+    {
+        if (ModelState.IsValid)
+        {
+            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+
+            if (result.Succeeded)
+            {
+                // Handle successful login
+                return RedirectToAction("Index", "Home");
+            }
+            // Handle failure
+            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            return View(model);
+        }
+        // If we got this far, something failed, redisplay form
+        return View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Logout()
+    {
+        await _signInManager.SignOutAsync();
+        return RedirectToAction("index", "home");
+    }
+
+
+
 // public async Task<IActionResult> CreateRole(){
 //             IdentityRole identityRole = new IdentityRole{Name = "admin"};
 //             await _roleManager.CreateAsync(identityRole);
