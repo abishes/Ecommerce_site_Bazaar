@@ -1,0 +1,43 @@
+@model Bazaar.Models.ViewModels.ProductViewModel;
+<h2>Add Product Info</h2>
+<div class="row">
+    <div class="col-md-12">
+        <form asp-controller="Product" asp-actiom="AddProduct" enctype="multipart/form-data" method="post">
+            @* Category: <input type="text" class="form-control" asp-for="Category">
+            <span asp-validation-for="Category" class="text-danger"></span><br> *@
+
+            <div class="form-group">
+                Category: <select class="form-control" asp-for="Category">
+                        <option value="">-- Select an option --</option>
+                        <option value="electronic">electronic</option>
+                        <option value="handmade">handmade</option>
+                        <option value="wareable">wareable</option>
+                        <option value="others">others</option>
+                </select>
+                <span asp-validation-for="Category" class="text-danger"></span><br>
+            </div>
+            <div class="form-group">
+                Name: <input type="text" class="form-control" asp-for="Name">
+                <span asp-validation-for="Name" class="text-danger"></span><br>
+            </div>
+            <div class="form-group">
+                Price: <input type="text" class="form-control" asp-for="Price">
+                <span asp-validation-for="Price" class="text-danger"></span><br>
+            </div>
+        @* Image: <input type="file" accept="image/*" class="form-control" asp-for="ImageFileName" required> *@
+
+            <div class="form-group">
+                Image: <input class="form-control" asp-for="ImageFileName" required>
+                <span asp-validation-for="ImageFileName" class="text-danger"></span><br>
+            </div>
+            <div class="form-group">
+                <textarea placeholder="Provide Description of your product" class="form-control" asp-for="Description" rows="10"></textarea>
+                <span asp-validation-for="ImageFileName" class="text-danger"></span><br>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Add</button>
+            </div>
+        </form>
+    </div>
+</div>

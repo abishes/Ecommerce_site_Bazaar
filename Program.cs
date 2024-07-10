@@ -8,10 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+string? conStr = builder.Configuration.GetConnectionString("mydatabase");
 builder.Services.AddDbContext<UserDbContext>(options =>
-    options.UseSqlite(
-        builder.Configuration.GetConnectionString("mydatabase")
-    ));
+    options.UseSqlite(conStr));
+
+builder.Services.AddDbContext<ProductDbContext>(options =>
+    options.UseSqlite(conStr));
     
 builder.Services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<UserDbContext>();

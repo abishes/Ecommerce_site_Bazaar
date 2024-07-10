@@ -5,21 +5,25 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Bazaar.Models.ViewModels;
 using Bazaar.Models.DbModels;
+using Bazaar.Models.AllDbContexts;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bazaar.Controllers;
 
 public class HomeController(
     UserManager<User> userManager,
     SignInManager<User> signInManager,
-    RoleManager<IdentityRole> roleManager) : Controller
+    RoleManager<IdentityRole> roleManager,
+    ProductDbContext pd) : Controller
 {
     private readonly UserManager<User> _userManager = userManager;
     private readonly SignInManager<User> _signInManager = signInManager;
     private readonly RoleManager<IdentityRole> _roleManager = roleManager;
+    private readonly ProductDbContext _productDb = pd;
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        return View(await _productDb.Products.ToListAsync());
     }
 
     public IActionResult Privacy()
