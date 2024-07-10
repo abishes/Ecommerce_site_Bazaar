@@ -1,0 +1,51 @@
+@model Bazaar.Models.ViewModels.RegisterViewModel;
+<h2>Registration Form</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-controller="Home" asp-actiom="Register" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            
+            <div class="form-group">
+                Firstname: <input type="text" class="form-control" asp-for="Fname">
+                <span asp-validation-for="Fname" class="text-danger"></span><br>
+            </div>
+            
+            <div class="form-group">
+                Lastname: <input type="text" class="form-control" asp-for="Lname">
+            <span asp-validation-for="Lname" class="text-danger"></span><br>
+            </div>
+            
+            <div class="form-group">
+                Phone: <input type="text" class="form-control" asp-for="Phone">
+                <span asp-validation-for="Phone" class="text-danger"></span><br>
+            </div>
+            
+            <div class="form-group">
+                Email: <input type="text" class="form-control" asp-for="Email">
+                <span asp-validation-for="Email" class="text-danger"></span><br>
+            </div>
+            
+            <div class="form-group">
+                Password: <input type="password" class="form-control" asp-for="Password">
+                <span asp-validation-for="Password" class="text-danger"></span><br>
+            </div>
+            
+            <div class="form-group">
+                Confirm Password: <input type="password" class="form-control" asp-for="ConfirmPassword">
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span><br>
+            </div>
+            
+            <div class="form-group">
+                <input type="checkbox" class="form-check-input" id="Subscribed" asp-for="Agreement">
+                <label class="form-check-label" for="Subscribed">Agree to tearms & conditions</label>
+                <span asp-validation-for="Agreement" class="text-danger"></span><br>
+            </div>
+            
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">SignUp</button>
+            </div>
+            
+        </form>
+    </div>
+</div>
