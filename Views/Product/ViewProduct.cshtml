@@ -1,7 +1,5 @@
 @model Bazaar.Models.DbModels.Product
 
-<h1>About page for a product</h1>
-
 @* <img src="~/images/@Model.ImageFileName" class="w-100" />
 <br>
 <h1>Price @Model.Price</h1>
@@ -15,7 +13,9 @@
             </div>
             <div class="col-md-6">
                 <h1 class="product-title">@Model.Name</h1>
-                <p class="product-description">This is a short description of the product. It highlights the key features and benefits of the product, giving potential customers a reason to buy.</p>
+                <p><strong>Category: @Model.Category</strong></p>
+                <p class="product-description">@Model.Description</p>
+                <p>Product enlist date:@Model.Date</p>
                 <p class="product-price">Rs.@Model.Price</p>
                 <div class="d-flex flex-column mt-4">
                         <a asp-controller="Product" asp-action="BuyProduct" asp-route-id="@Model.Id" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-sm" type="button">Buy Now</a>

@@ -40,9 +40,44 @@ public class ProductController(ProductDbContext pdb): Controller{
         }
         return View(product);
     }
-
-    public async Task<IActionResult> EnlistProduct(){
+    [HttpGet]
+    public async Task<IActionResult> ListProduct(){
         return View(await _productDb.Products.ToListAsync());
+    }
+    [HttpGet]
+    public async Task<IActionResult> EditProduct(Guid id){
+        var product =await _productDb.Products.FindAsync(id);
+        if(product != null){
+            return View(product);
+        }
+        return RedirectToAction("ListProduct", "Product");
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> EditProduct(Product product){
+        if(ModelState.IsValid){
+            var productEdit =await _productDb.Products.FindAsync(product.Id);
+            if(productEdit != null){
+                productEdit.Category = product.Category;
+                productEdit.Name = product.Name;
+                productEdit.Price = product.Price;
+                productEdit.Description = product.Description;
+                await _productDb.SaveChangesAsync();
+                return RedirectToAction("ListProduct","Product");
+            }
+            return RedirectToAction("ListProduct","Product");
+        }
+        return View(product);
+    }
+    [HttpPost]
+    public async Task<IActionResult> DeleteProduct(Guid Id){
+        var product = await _productDb.Products.FindAsync(Id);
+        if(product != null){
+            _productDb.Products.Remove(product);
+            await _productDb.SaveChangesAsync();
+            return RedirectToAction("ListProduct","Product");
+        }
+        return Content("Could not delete the product");
     }
 
     [HttpGet]
