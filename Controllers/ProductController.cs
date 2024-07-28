@@ -3,15 +3,17 @@ using Microsoft.AspNetCore.Mvc;
 using Bazaar.Models.ViewModels;
 using Bazaar.Models.DbModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 public class ProductController(ProductDbContext pdb): Controller{
     private readonly ProductDbContext _productDb = pdb;
 
+    [Authorize(Roles ="admin")]
     [HttpGet]
     public IActionResult AddProduct(){
         return View();
     }
-
+    [Authorize(Roles ="admin")]
     [HttpPost]
     public async Task<IActionResult> AddProduct(ProductViewModel product){
         if(ModelState.IsValid && (product.ImageFileName !=null)){
@@ -36,14 +38,16 @@ public class ProductController(ProductDbContext pdb): Controller{
             };
             await _productDb.Products.AddAsync(newProduct);
             await _productDb.SaveChangesAsync();          
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("AddProduct", "Product");
         }
         return View(product);
     }
+    [Authorize(Roles ="admin")]
     [HttpGet]
     public async Task<IActionResult> ListProduct(){
         return View(await _productDb.Products.ToListAsync());
     }
+    [Authorize(Roles ="admin")]
     [HttpGet]
     public async Task<IActionResult> EditProduct(Guid id){
         var product =await _productDb.Products.FindAsync(id);
@@ -52,7 +56,7 @@ public class ProductController(ProductDbContext pdb): Controller{
         }
         return RedirectToAction("ListProduct", "Product");
     }
-
+    [Authorize(Roles ="admin")]
     [HttpPost]
     public async Task<IActionResult> EditProduct(Product product){
         if(ModelState.IsValid){
@@ -69,6 +73,7 @@ public class ProductController(ProductDbContext pdb): Controller{
         }
         return View(product);
     }
+    [Authorize(Roles ="admin")]
     [HttpPost]
     public async Task<IActionResult> DeleteProduct(Guid Id){
         var product = await _productDb.Products.FindAsync(Id);
@@ -85,7 +90,7 @@ public class ProductController(ProductDbContext pdb): Controller{
         var product = await _productDb.Products.FindAsync(Id);
         return View(product);
     }
-
+    [Authorize(Roles ="User")]
     [HttpGet]
     public async Task<IActionResult> BuyProduct(Guid Id){
         var product = await _productDb.Products.FindAsync(Id);
