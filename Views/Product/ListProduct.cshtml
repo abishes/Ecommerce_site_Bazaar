@@ -6,6 +6,7 @@
         <tr>
             <th>Id</th>
             <th>Name</th>
+            <th>Category</th>
             <th></th>
         </tr>
     </thead>
@@ -14,12 +15,15 @@
             <tr>
                 <td>@product.Id</td>
                 <td>@product.Name</td>
+                <td>@product.Category</td>
                 <td>
-                    <a class="btn btn-primary" asp-controller="product" asp-action="EditProduct" asp-route-id="@product.Id">Edit</a>
-                    <form method="post" asp-controller="product" asp-action="DeleteProduct">
-                        <input type="text" name="Id" id="Id" value="@product.Id" style="display: none;">
-                                    <button type="submit" class="btn btn-primary">Delete</button>
-                    </form>
+                    <div class="btn-group">
+                        <a class="btn btn-outline-primary" asp-controller="Product" asp-action="EditProduct" asp-route-id="@product.Id">Edit</a>&nbsp;&nbsp;
+                        <form method="post" asp-controller="product" asp-action="DeleteProduct">
+                            <input type="text" name="Id" id="Id" value="@product.Id" style="display: none;">
+                                        <button type="submit" class="btn btn-outline-danger">Delete</button>
+                        </form>
+                    </div>
                     @* <a class="btn btn-danger" asp-controller="product" asp-action="DeleteProduct" asp-route-id="@product.Id">Delete</a> *@
                 </td>
             </tr>

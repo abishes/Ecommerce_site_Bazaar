@@ -23,9 +23,30 @@ public class HomeController(
 
     public async Task<IActionResult> Index()
     {
-        return View(await _productDb.Products.ToListAsync());
+        ViewBag.UserRole="";
+
+        ViewBag.CategoryList= new List<string> {"electronic","handmade","wareable","others"};
+
+        var electronicsObj = await _productDb.Products.Where(product=> product.Category =="electronic").Take(3).ToListAsync();
+        var handmadeObj = await _productDb.Products.Where(product=> product.Category =="handmade").Take(3).ToListAsync();
+        var wareableObj = await _productDb.Products.Where(product=> product.Category =="wareable").Take(3).ToListAsync();
+        var othersObj = await _productDb.Products.Where(product=> product.Category =="others").Take(3).ToListAsync();
+        List<List<Product>> productCategories = [electronicsObj, handmadeObj, wareableObj, othersObj];
+
+
+        if(_signInManager.IsSignedIn(User)){
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            ViewBag.UserRole= (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+        }
+        return View(productCategories);
+        // return View(await _productDb.Products.ToListAsync());
     }
 
+    [HttpGet]
+    public async Task<IActionResult> ProductOfCategory(string Category){
+        ViewBag.CatName = Category;
+        return View(await _productDb.Products.Where(product=> product.Category ==Category).ToListAsync());
+    }
     public IActionResult Privacy()
     {
         return View();

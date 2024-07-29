@@ -1,27 +1,11 @@
-﻿@using Bazaar.Models.DbModels
-@model List<List<Bazaar.Models.DbModels.Product>>
+@using Bazaar.Models.DbModels
+@model List<Bazaar.Models.DbModels.Product>
 
-@{
-    var categories = ViewBag.CategoryList as List<string>;
-    int i = 0; //index for categories
-}
-
-<h1 style="color:#0d6efd; text-align:center">Products At Bazaar</h1>
+<h1 style="color:#0d6efd; text-align:center">@ViewBag.CatName.ToUpper() Products</h1>
 <br>
-@foreach(var productCategories in Model){
-    
-    <h2>
-        <a href="@Url.Action("ProductOfCategory", "Home", new { Category = categories[i] })" style="text-decoration: none">
-            @categories[i].ToUpper()>>>
-        </a>
-    </h2>
-    
-    //incrementing the value of i
-        i++;
-
-    <section style="background-color: #eee;">
+<section style="background-color: #eee;">
     <div class="container py-5">
-            @foreach(Product product in productCategories){
+            @foreach(Product product in Model){
                 <div class="row justify-content-center mb-3">
                 <div class="col-md-12 col-xl-10">
                     <div class="card shadow-0 border rounded-3">
@@ -77,9 +61,6 @@
                             </div>
                             <div class="d-flex flex-column mt-4">
                             <a asp-controller="Product" asp-action="BuyProduct" asp-route-id="@product.Id" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-sm" type="button">Buy Now</a>
-                            @* <button data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary btn-sm mt-2" type="button">
-                                Add to wishlist
-                            </button> *@
                             </div>
                         </div>
                         </div>
@@ -90,10 +71,3 @@
             }
     </div>
     </section>
-}
-
-@if(ViewBag.UserRole == "admin"){
-    <a class="btn btn-outline-primary" asp-controller="Product" asp-action="ListProduct">Admin Control</a>
-}
-
-@* https://mdbootstrap.com/docs/standard/extended/product-cards/ *@
